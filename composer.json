@@ -1,0 +1,19 @@
+{
+    "name": "przwl/multi-source-file-upload",
+    "description": "Plugin that allows multi source file upload include urls and attachments",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Przwl\\MultiSourceFileUpload\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "prazwal-bns",
+            "email": "prajwalbns15@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
