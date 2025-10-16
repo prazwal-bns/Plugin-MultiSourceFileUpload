@@ -2,7 +2,11 @@
 
 namespace Przwl\MultiSourceFileUpload;
 
-class MultiSourceFileUploadServiceProvider extends \Illuminate\Support\ServiceProvider
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Support\ServiceProvider;
+
+
+class MultiSourceFileUploadServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -33,6 +37,24 @@ class MultiSourceFileUploadServiceProvider extends \Illuminate\Support\ServicePr
      */
     public function register()
     {
-        //
+        $this->registerTabMacro();
+    }
+
+    public function registerTabMacro()
+    {
+        Tab::macro('monitorFileUpload', function (?string $tabToHide = null, int $pollInterval = 50) {
+            return $this->extraAttributes(function() use($tabToHide, $pollInterval){
+                $targetLabel = $tabToHide ?? $this->getLabel();
+
+                return [
+                    'x-init' => "setInterval(() => { 
+                        const f = document.querySelector('.filepond--file'); 
+                        const t = Array.from(document.querySelectorAll('button[role=\\'tab\\']'))
+                            .find(b => b.textContent.includes('{$targetLabel}')); 
+                        if (t) t.style.display = f ? 'none' : 'flex'; 
+                    }, $pollInterval)",
+                ];
+            });
+        });
     }
 }
