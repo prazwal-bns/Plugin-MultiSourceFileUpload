@@ -64,12 +64,14 @@ class MultiSourceFileUpload extends Component
                 ->tabs([
                     Tabs\Tab::make('file_tab')
                         ->label(config('multi-source-file-upload.labels.file_upload'))
+                        ->icon(config('multi-source-file-upload.icons.file_upload'))
                         ->schema([
                             $fileUpload,
                         ])
                         ->live(),
                     Tabs\Tab::make('url_tab')
                         ->label(config('multi-source-file-upload.labels.url_upload'))
+                        ->icon(config('multi-source-file-upload.icons.url_upload'))
                         ->schema([
                             TextInput::make($urlFieldName)
                                 ->url()
