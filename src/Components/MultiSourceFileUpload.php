@@ -4,6 +4,9 @@ namespace Przwl\MultiSourceFileUpload\Components;
 
 use Closure;
 use Filament\Forms\Components\Component;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
 
 class MultiSourceFileUpload extends Component
 {
@@ -24,5 +27,63 @@ class MultiSourceFileUpload extends Component
         $instance->urlFieldName = $urlFieldName;
 
         return $instance;
+    }
+
+
+    // Fluent API methods (return $this for chaining)
+    public function image(bool $condition = true): static
+    {
+        $this->imageOnly = $condition;
+        return $this;
+    }
+    
+
+    public function required(bool | Closure $condition = true): static
+    {
+        $this->required = $condition;
+        return $this;
+    }
+
+
+    protected function getChildComponents(): array
+    {
+        $fileFieldName = $this->fileFieldName;
+        $urlFieldName = $this->urlFieldName;
+        $required = $this->required;
+        $imageOnly = $this->imageOnly;
+
+        $fileUpload = FileUpload::make($fileFieldName)
+                ->required(fn($get) => empty($get($urlFieldName)) && $required);
+
+        if ($imageOnly) {
+            $fileUpload->image();
+        }
+
+        return [
+            Tabs::make('upload_options')
+                ->tabs([
+                    Tabs\Tab::make('file_tab')
+                        ->label('File Upload')
+                        ->schema([
+                            $fileUpload,
+                        ]),
+                    Tabs\Tab::make('url_tab')
+                        ->label('URL Upload')
+                        ->schema([
+                            TextInput::make($urlFieldName)
+                                ->url()
+                                ->live()
+                                ->required(fn($get) => empty($get($fileFieldName)) && $required)
+                                ->afterStateUpdated(function ($state, $set) use ($fileFieldName) {
+                                    if (!empty($state)) {
+                                        $set($fileFieldName, null);
+                                    }
+                                })
+                        ])
+                        ->live()
+                        ->monitorFileUpload()
+                ])
+                ->columnSpanFull(),
+        ];
     }
 }
