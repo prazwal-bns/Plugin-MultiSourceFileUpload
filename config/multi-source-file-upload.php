@@ -11,4 +11,4 @@ return [
         'file_upload' => 'heroicon-o-arrow-up-tray',
         'url_upload' => 'heroicon-o-globe-alt',
     ]
-]
+];

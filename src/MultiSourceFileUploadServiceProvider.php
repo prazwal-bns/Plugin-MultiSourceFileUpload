@@ -24,13 +24,14 @@ class MultiSourceFileUploadServiceProvider extends ServiceProvider
         //     __DIR__.'/../resources/views' => resource_path('views/vendor/multi-source-file-upload'),
         // ], 'views');
 
-        // $this->publishes([
-        //     __DIR__.'/../config/multi-source-file-upload.php' => config_path('multi-source-file-upload.php'),
-        // ], 'config');
+        $this->publishes([
+            __DIR__.'/../config/multi-source-file-upload.php' => config_path('multi-source-file-upload.php'),
+        ], 'multi-source-file-upload-config');
 
-        // $this->mergeConfigFrom(
-        //     __DIR__.'/../config/multi-source-file-upload.php', 'multi-source-file-upload'
-        // );
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/multi-source-file-upload.php', 
+            'multi-source-file-upload'
+        );
     }
 
     /**
