@@ -15,19 +15,22 @@ class MultiSourceFileUploadServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'multi-source-file-upload');
+        
+        $this->registerTabMacro();
 
-        $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/multi-source-file-upload'),
-        ], 'views');
+        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'multi-source-file-upload');
 
-        $this->publishes([
-            __DIR__.'/../config/multi-source-file-upload.php' => config_path('multi-source-file-upload.php'),
-        ], 'config');
+        // $this->publishes([
+        //     __DIR__.'/../resources/views' => resource_path('views/vendor/multi-source-file-upload'),
+        // ], 'views');
 
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/multi-source-file-upload.php', 'multi-source-file-upload'
-        );
+        // $this->publishes([
+        //     __DIR__.'/../config/multi-source-file-upload.php' => config_path('multi-source-file-upload.php'),
+        // ], 'config');
+
+        // $this->mergeConfigFrom(
+        //     __DIR__.'/../config/multi-source-file-upload.php', 'multi-source-file-upload'
+        // );
     }
 
     /**
@@ -37,7 +40,7 @@ class MultiSourceFileUploadServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerTabMacro();
+        //
     }
 
     public function registerTabMacro()

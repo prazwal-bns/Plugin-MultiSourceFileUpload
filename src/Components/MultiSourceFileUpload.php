@@ -49,8 +49,8 @@ class MultiSourceFileUpload extends Component
     {
         $fileFieldName = $this->fileFieldName;
         $urlFieldName = $this->urlFieldName;
-        $required = $this->required;
-        $imageOnly = $this->imageOnly;
+        $required = $this->evaluate($this->required);
+        $imageOnly = $this->evaluate($this->imageOnly);
 
         $fileUpload = FileUpload::make($fileFieldName)
                 ->required(fn($get) => empty($get($urlFieldName)) && $required);
@@ -63,12 +63,13 @@ class MultiSourceFileUpload extends Component
             Tabs::make('upload_options')
                 ->tabs([
                     Tabs\Tab::make('file_tab')
-                        ->label('File Upload')
+                        ->label(config('multi-source-file-upload.labels.file_upload'))
                         ->schema([
                             $fileUpload,
-                        ]),
+                        ])
+                        ->live(),
                     Tabs\Tab::make('url_tab')
-                        ->label('URL Upload')
+                        ->label(config('multi-source-file-upload.labels.url_upload'))
                         ->schema([
                             TextInput::make($urlFieldName)
                                 ->url()
