@@ -17,8 +17,6 @@ class MultiSourceFileUpload extends Component
     protected bool | Closure $imageOnly = false;
 
     
-    
-    // factory method
     public static function make(string $fileFieldName, string $urlFieldName): static
     {
         $instance = app(static::class);
