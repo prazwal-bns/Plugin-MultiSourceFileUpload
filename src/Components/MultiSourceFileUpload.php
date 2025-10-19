@@ -3,12 +3,13 @@
 namespace Przwl\MultiSourceFileUpload\Components;
 
 use Closure;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Tabs;
 
-class MultiSourceFileUpload extends Component
+class MultiSourceFileUpload
 {
     // Configurable properties
     protected string $fileFieldName = '';
@@ -19,7 +20,7 @@ class MultiSourceFileUpload extends Component
     
     public static function make(string $fileFieldName, string $urlFieldName): static
     {
-        $instance = app(static::class);
+        $instance = new static();
 
         $instance->fileFieldName = $fileFieldName;
         $instance->urlFieldName = $urlFieldName;
@@ -43,7 +44,7 @@ class MultiSourceFileUpload extends Component
     }
 
 
-    protected function getChildComponents(): array
+    public function __invoke(): array
     {
         $fileFieldName = $this->fileFieldName;
         $urlFieldName = $this->urlFieldName;
@@ -51,7 +52,7 @@ class MultiSourceFileUpload extends Component
         $imageOnly = $this->evaluate($this->imageOnly);
 
         $fileUpload = FileUpload::make($fileFieldName)
-                ->required(fn($get) => empty($get($urlFieldName)) && $required);
+                ->required(fn(Get $get) => empty($get($urlFieldName)) && $required);
 
         if ($imageOnly) {
             $fileUpload->image();
@@ -74,8 +75,8 @@ class MultiSourceFileUpload extends Component
                             TextInput::make($urlFieldName)
                                 ->url()
                                 ->live()
-                                ->required(fn($get) => empty($get($fileFieldName)) && $required)
-                                ->afterStateUpdated(function ($state, $set) use ($fileFieldName) {
+                                ->required(fn(Get $get) => empty($get($fileFieldName)) && $required)
+                                ->afterStateUpdated(function ($state, Set $set) use ($fileFieldName) {
                                     if (!empty($state)) {
                                         $set($fileFieldName, null);
                                     }
@@ -86,5 +87,22 @@ class MultiSourceFileUpload extends Component
                 ])
                 ->columnSpanFull(),
         ];
+    }
+
+    public function getSchema(): array
+    {
+        return $this();
+    }
+
+    /**
+     * Evaluate a closure or return the value directly
+     */
+    protected function evaluate($value)
+    {
+        if ($value instanceof Closure) {
+            return $value();
+        }
+        
+        return $value;
     }
 }

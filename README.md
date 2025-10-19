@@ -68,19 +68,42 @@ return [
 
 ## Usage
 
-In your Filament form, use the `MultiSourceFileUpload` component.
+In your Filament form, use the `MultiSourceFileUpload` component by spreading its schema into your form.
 
 ```php
 use Przwl\MultiSourceFileUpload\Components\MultiSourceFileUpload;
 
 // Basic usage
-MultiSourceFileUpload::make('attachment', 'attachment_url'),
+...MultiSourceFileUpload::make('attachment', 'attachment_url'),
 
 // Make the upload required
-MultiSourceFileUpload::make('attachment', 'attachment_url')->required(),
+...MultiSourceFileUpload::make('attachment', 'attachment_url')->required(),
 
 // Restrict to only images
-MultiSourceFileUpload::make('photo', 'photo_url')->image()
+...MultiSourceFileUpload::make('photo', 'photo_url')->image()
+```
+
+### Complete Example
+
+```php
+use Filament\Forms\Form;
+use Przwl\MultiSourceFileUpload\Components\MultiSourceFileUpload;
+
+public function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            TextInput::make('title')
+                ->required(),
+            
+            // Use the multi-source file upload component
+            ...MultiSourceFileUpload::make('image', 'image_url')
+                ->required()
+                ->image(),
+                
+            // Other form fields...
+        ]);
+}
 ```
 
 Both "file" and "url" tabs are coordinated: uploading a file clears the URL; supplying a URL clears the file field.
@@ -102,8 +125,8 @@ Both "file" and "url" tabs are coordinated: uploading a file clears the URL; sup
 You can customize required logic or column span (see the implementation for details):
 
 ```php
-MultiSourceFileUpload::make('attachment', 'attachment_url')
-    ->required(fn () => ... )
+...MultiSourceFileUpload::make('attachment', 'attachment_url')
+    ->required(fn () => auth()->user()->isAdmin())
     ->image();
 ```
 

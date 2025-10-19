@@ -46,19 +46,21 @@ class MultiSourceFileUploadServiceProvider extends ServiceProvider
 
     public function registerTabMacro()
     {
-        Tab::macro('monitorFileUpload', function (?string $tabToHide = null, int $pollInterval = 50) {
-            return $this->extraAttributes(function() use($tabToHide, $pollInterval){
-                $targetLabel = $tabToHide ?? $this->getLabel();
+        if (!Tab::hasMacro('monitorFileUpload')) {
+            Tab::macro('monitorFileUpload', function (?string $tabToHide = null, int $pollInterval = 50) {
+                return $this->extraAttributes(function() use($tabToHide, $pollInterval){
+                    $targetLabel = $tabToHide ?? $this->getLabel();
 
-                return [
-                    'x-init' => "setInterval(() => { 
-                        const f = document.querySelector('.filepond--file'); 
-                        const t = Array.from(document.querySelectorAll('button[role=\\'tab\\']'))
-                            .find(b => b.textContent.includes('{$targetLabel}')); 
-                        if (t) t.style.display = f ? 'none' : 'flex'; 
-                    }, $pollInterval)",
-                ];
+                    return [
+                        'x-init' => "setInterval(() => { 
+                            const f = document.querySelector('.filepond--file'); 
+                            const t = Array.from(document.querySelectorAll('button[role=\\'tab\\']'))
+                                .find(b => b.textContent.includes('{$targetLabel}')); 
+                            if (t) t.style.display = f ? 'none' : 'flex'; 
+                        }, $pollInterval)",
+                    ];
+                });
             });
-        });
+        }
     }
 }
