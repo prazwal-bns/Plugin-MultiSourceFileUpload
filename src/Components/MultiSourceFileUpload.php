@@ -67,7 +67,8 @@ class MultiSourceFileUpload
                         ->schema([
                             $fileUpload,
                         ])
-                        ->live(),
+                        ->live()
+                        ->hidden(fn(Get $get) => !empty($get($urlFieldName))),
                     Tabs\Tab::make('url_tab')
                         ->label(config('multi-source-file-upload.labels.url_upload'))
                         ->icon(config('multi-source-file-upload.icons.url_upload'))
