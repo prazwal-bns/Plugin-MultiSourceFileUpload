@@ -97,6 +97,18 @@ public function form(Form $form): Form
 
 Both "file" and "url" tabs are coordinated: uploading a file clears the URL; supplying a URL clears the file field.
 
+> **Important:** Make sure to set the database fields (e.g., `image` and `image_url`) to `->nullable()` in your migration file, since only one field will be filled at a time.
+
+```php
+// Example migration
+Schema::create('your_table', function (Blueprint $table) {
+    $table->id();
+    $table->string('image')->nullable();
+    $table->string('image_url')->nullable();
+    // ...
+});
+```
+
 ---
 
 ## How It Works
