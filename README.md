@@ -40,7 +40,7 @@ If you are using Laravel < 10 or not using package discovery, add the service pr
 Optionally publish the config:
 
 ```bash
-php artisan vendor:publish --tag="config" --provider="Przwl\MultiSourceFileUpload\MultiSourceFileUploadServiceProvider"
+php artisan vendor:publish --tag="multi-source-file-upload-config"
 ```
 
 You can customize:

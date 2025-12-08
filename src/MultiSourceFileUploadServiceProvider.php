@@ -15,14 +15,7 @@ class MultiSourceFileUploadServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
         $this->registerTabMacro();
-
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'multi-source-file-upload');
-
-        // $this->publishes([
-        //     __DIR__.'/../resources/views' => resource_path('views/vendor/multi-source-file-upload'),
-        // ], 'views');
 
         $this->publishes([
             __DIR__.'/../config/multi-source-file-upload.php' => config_path('multi-source-file-upload.php'),
